@@ -288,6 +288,7 @@ bool AP_Mission::verify_command(const Mission_Command& cmd)
 {
     switch (cmd.id) {
     // do-commands always return true for verify:
+    case MAV_CMD_DO_SHEEPRTT:
     case MAV_CMD_DO_GRIPPER:
     case MAV_CMD_DO_SET_SERVO:
     case MAV_CMD_DO_SET_RELAY:
@@ -313,6 +314,8 @@ bool AP_Mission::start_command(const Mission_Command& cmd)
 
     gcs().send_text(MAV_SEVERITY_INFO, "Mission: %u %s", cmd.index, cmd.type());
     switch (cmd.id) {
+    case MAV_CMD_DO_SHEEPRTT:
+        return start_command_do_sheeprtt(cmd);
     case MAV_CMD_DO_GRIPPER:
         return start_command_do_gripper(cmd);
     case MAV_CMD_DO_SET_SERVO:
@@ -1033,6 +1036,10 @@ MAV_MISSION_RESULT AP_Mission::mavlink_int_to_mission_cmd(const mavlink_mission_
         cmd.content.gripper.action = packet.param2;     // action 0=release, 1=grab.  See GRIPPER_ACTION enum
         break;
 
+    case MAV_CMD_DO_SHEEPRTT:                            // MAV ID: 33780
+        cmd.content.sheeprtt.action = packet.param2;     // action 0=start, 1=stop, 2=retrive.  See SHEEPRTT_ACTION enum
+        break;
+
     case MAV_CMD_DO_GUIDED_LIMITS:                      // MAV ID: 222
         cmd.p1 = packet.param1;                         // max time in seconds the external controller will be allowed to control the vehicle
         cmd.content.guided_limits.alt_min = packet.param2;  // min alt below which the command will be aborted.  0 for no lower alt limit
@@ -1471,6 +1478,10 @@ bool AP_Mission::mission_cmd_to_mavlink_int(const AP_Mission::Mission_Command& c
     case MAV_CMD_DO_GRIPPER:                            // MAV ID: 211
         packet.param1 = cmd.content.gripper.num;        // gripper number
         packet.param2 = cmd.content.gripper.action;     // action 0=release, 1=grab.  See GRIPPER_ACTION enum
+        break;
+
+    case MAV_CMD_DO_SHEEPRTT:                            // MAV ID: 33780
+        packet.param1 = cmd.content.sheeprtt.action;     // action 0=start, 1=stop, 2=retrive.  See SHEEPRTT_ACTION enum
         break;
 
     case MAV_CMD_DO_GUIDED_LIMITS:                      // MAV ID: 222
@@ -2226,6 +2237,8 @@ const char *AP_Mission::Mission_Command::type() const
         return "Delay";
     case MAV_CMD_DO_GRIPPER:
         return "Gripper";
+    case MAV_CMD_DO_SHEEPRTT:
+        return "SheepRTT";
     case MAV_CMD_NAV_PAYLOAD_PLACE:
         return "PayloadPlace";
     case MAV_CMD_DO_PARACHUTE:

@@ -87,6 +87,11 @@ enum class LogEvent : uint8_t {
     STANDBY_ENABLE = 74,
     STANDBY_DISABLE = 75,
 
+    //SheepRTT events
+    SHEEPRTT_START = 80,
+    SHEEPRTT_STOP = 81,
+    SHEEPRTT_RETRIVE = 82,
+
     SURFACED = 163,
     NOT_SURFACED = 164,
     BOTTOMED = 165,

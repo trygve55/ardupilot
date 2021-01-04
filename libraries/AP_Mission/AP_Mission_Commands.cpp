@@ -6,6 +6,12 @@
 #include <AP_Parachute/AP_Parachute.h>
 #include <AP_ServoRelayEvents/AP_ServoRelayEvents.h>
 
+bool AP_Mission::start_command_do_sheeprtt(const AP_Mission::Mission_Command& cmd)
+{
+    //Todo: sheeprtt
+    return false;
+}
+
 bool AP_Mission::start_command_do_gripper(const AP_Mission::Mission_Command& cmd)
 {
     AP_Gripper *gripper = AP::gripper();

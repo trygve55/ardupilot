@@ -3719,6 +3719,14 @@ MAV_RESULT GCS_MAVLINK::handle_command_debug_trap(const mavlink_command_long_t &
     return MAV_RESULT_UNSUPPORTED;
 }
 
+MAV_RESULT GCS_MAVLINK::handle_command_do_sheeprtt(const mavlink_command_long_t &packet)
+{
+    //TODO: sheeprtt
+    MAV_RESULT result = MAV_RESULT_ACCEPTED;
+
+    return result;
+}
+
 MAV_RESULT GCS_MAVLINK::handle_command_do_gripper(const mavlink_command_long_t &packet)
 {
     AP_Gripper *gripper = AP::gripper();
@@ -3841,6 +3849,10 @@ MAV_RESULT GCS_MAVLINK::handle_command_long_packet(const mavlink_command_long_t 
     case MAV_CMD_DO_DIGICAM_CONTROL:
     case MAV_CMD_DO_SET_CAM_TRIGG_DIST:
         result = handle_command_camera(packet);
+        break;
+
+    case MAV_CMD_DO_SHEEPRTT:
+        result = handle_command_do_sheeprtt(packet);
         break;
 
     case MAV_CMD_DO_GRIPPER:

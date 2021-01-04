@@ -142,6 +142,11 @@ public:
         uint8_t trigger;        // triggers one image capture immediately
     };
 
+    // sheepRTT command structure
+    struct PACKED SheepRTT_Command {
+        uint8_t action;         // action (0 = start, 1 = stop, 2 = retrive)
+    };
+
     // gripper command structure
     struct PACKED Gripper_Command {
         uint8_t num;            // gripper number
@@ -237,6 +242,9 @@ public:
 
         // cam trigg distance
         Cam_Trigg_Distance cam_trigg_dist;
+
+        // sheeprtt-gripper
+        SheepRTT_Command sheeprtt;
 
         // do-gripper
         Gripper_Command gripper;
@@ -691,6 +699,7 @@ private:
     static HAL_Semaphore _rsem;
 
     // mission items common to all vehicles:
+    bool start_command_do_sheeprtt(const AP_Mission::Mission_Command& cmd);
     bool start_command_do_gripper(const AP_Mission::Mission_Command& cmd);
     bool start_command_do_servorelayevents(const AP_Mission::Mission_Command& cmd);
     bool start_command_camera(const AP_Mission::Mission_Command& cmd);
